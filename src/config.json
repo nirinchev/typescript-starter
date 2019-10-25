@@ -1,0 +1,6 @@
+{
+    "instanceUrl": "https://my-instance-url.cloud.realm.io",
+    "realmUrl": "realms://my-instance-url.cloud.realm.io/~/foo",
+    "username": "a",
+    "password": "a"
+}

@@ -1,23 +1,22 @@
 import Realm from "realm";
+import config from "./config.json";
 
 export class RealmTester {
-    private instanceUrl = "https://my-instance.us1.cloud.realm.io";
-    private realmUrl = "https://my-instance.us1.cloud.realm.io/~/foo";
-    private username = "";
-    private password = "";
-
     public async run() {
-        const credentials = Realm.Sync.Credentials.usernamePassword(this.username, this.password);
-        const user = await Realm.Sync.User.login(this.instanceUrl, credentials);
-        const config = user.createConfiguration({
+        const credentials = Realm.Sync.Credentials.usernamePassword(config.username, config.password);
+        const user = await Realm.Sync.User.login(config.instanceUrl, credentials);
+        const realmConfig = user.createConfiguration({
             schema: [Person.schema],
             sync: {
                 fullSynchronization: true,
-                url: this.realmUrl,
+                url: config.realmUrl,
             }
         });
-        const realm = await Realm.open(config);
-
+        const realm = await Realm.open(realmConfig);
+        if (realm.syncSession !== null) {
+            console.log("Sync session: " + realm.syncSession.downloadAllServerChanges);
+            await realm.syncSession.downloadAllServerChanges();
+        }
         realm.close();
     }
 }
