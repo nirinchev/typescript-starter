@@ -1,6 +1,9 @@
+import { RealmTester } from "./realm"
+
 class App {
     public static async start() {
-        return null;
+        const tester = new RealmTester();
+        await tester.run();
     }
 }
 
